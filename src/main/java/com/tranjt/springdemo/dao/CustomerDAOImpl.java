@@ -10,28 +10,38 @@ import org.springframework.stereotype.Repository;
 
 import com.tranjt.springdemo.entity.Customer;
 
-
 @Repository
 public class CustomerDAOImpl implements CustomerDAO {
-	
+
 	// need to inject the session factory
 	@Autowired
 	private SessionFactory sessionFactory;
-	
+
 	@Override
 	public List<Customer> getCustomers() {
-		
+
+		// get the current hibernate session
+		Session currentSession = sessionFactory.getCurrentSession();
+
+		// create a query
+		Query<Customer> theQuery = currentSession.createQuery("from Customer", Customer.class);
+
+		// execute query and get result list
+		List<Customer> customers = theQuery.getResultList();
+
+		// return the results
+		return customers;
+	}
+
+	@Override
+	public void saveCustomer(Customer theCustomer) {
+
 		// get the current hibernate session
 		Session currentSession = sessionFactory.getCurrentSession();
 		
-		// create a query 
-		Query<Customer> theQuery = currentSession.createQuery("from Customer", Customer.class);
-		
-		// execute query and get result list
-		List<Customer> customers = theQuery.getResultList();
-		
-		// return the results		
-		return customers;
+		// save the customer
+		currentSession.save(theCustomer);
+
 	}
 
 }
