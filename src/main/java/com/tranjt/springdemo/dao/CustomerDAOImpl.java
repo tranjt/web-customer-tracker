@@ -40,9 +40,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 		// get the current hibernate session
 		Session currentSession = sessionFactory.getCurrentSession();
 		
-		// save the customer
-		currentSession.save(theCustomer);
-
+		// save or update the customer 
+		currentSession.saveOrUpdate(theCustomer);
 	}
 
 	@Override
